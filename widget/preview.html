@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Blubluish Alert Preview</title>
+  <link rel="stylesheet" href="./widget.css">
+  <style>
+    body {
+      background:
+        radial-gradient(circle at 50% 45%, #25334b 0%, #131b29 52%, #090d14 100%)
+        !important;
+    }
+
+    .preview-controls {
+      position: fixed;
+      z-index: 9999;
+      left: 18px;
+      top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-width: 500px;
+      font-family: system-ui, sans-serif;
+    }
+
+    .preview-controls button {
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(14,22,35,.88);
+      color: #fff;
+      border-radius: 8px;
+      padding: 9px 13px;
+      cursor: pointer;
+    }
+
+    .preview-controls button:hover {
+      background: rgba(38,58,88,.95);
+    }
+  </style>
+</head>
+<body>
+
+<div class="preview-controls">
+  <button data-rarity="rare">RARE</button>
+  <button data-rarity="epic">EPIC</button>
+  <button data-rarity="legendary">LEGENDARY</button>
+  <button data-rarity="golden">GOLDEN LEGENDARY</button>
+</div>
+
+<div id="bb-alert" class="bb-alert bb-hidden" aria-hidden="true">
+  <div class="bb-stage">
+    <div class="bb-aura"></div>
+    <div class="bb-burst"></div>
+    <div class="bb-ring bb-ring-1"></div>
+    <div class="bb-ring bb-ring-2"></div>
+    <div id="bb-particles" class="bb-particles"></div>
+
+    <div class="bb-card-wrap">
+      <img id="bb-card-image" class="bb-card-image" alt="">
+      <div id="bb-username" class="bb-username">ArthasMain</div>
+      <div class="bb-foil"></div>
+      <div class="bb-glint"></div>
+    </div>
+
+    <div id="bb-front-particles" class="bb-front-particles"></div>
+  </div>
+</div>
+
+<script>
+const CONFIG = {
+  rare: {
+    css: "bb-rare",
+    image: "https://wiedertv.github.io/blubluish_stream/assets/RARE.png",
+    particles: 20,
+    spread: 270
+  },
+  epic: {
+    css: "bb-epic",
+    image: "https://wiedertv.github.io/blubluish_stream/assets/EPIC.png",
+    particles: 27,
+    spread: 315
+  },
+  legendary: {
+    css: "bb-legendary",
+    image: "https://wiedertv.github.io/blubluish_stream/assets/LEGENDARY.png",
+    particles: 34,
+    spread: 350
+  },
+  golden: {
+    css: "bb-golden",
+    image: "https://wiedertv.github.io/blubluish_stream/assets/GOLDEN_LEGENDARY.png",
+    particles: 46,
+    spread: 390
+  }
+};
+
+const root = document.getElementById("bb-alert");
+const card = document.getElementById("bb-card-image");
+const particles = document.getElementById("bb-particles");
+const frontParticles = document.getElementById("bb-front-particles");
+
+let hideTimer;
+
+function cssUrl(url) {
+  return `url("${String(url).replace(/\\/g, "\\\\").replace(/"/g, '\\"')}")`;
+}
+
+function random(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function clearParticles() {
+  particles.innerHTML = "";
+  frontParticles.innerHTML = "";
+}
+
+function createParticle(layer, spread, front) {
+  const p = document.createElement("span");
+  p.className = `bb-particle ${Math.random() > .54 ? "bb-dot" : ""}`;
+
+  const angle = random(0, Math.PI * 2);
+  const radius = random(30, spread * .38);
+  const travel = random(spread * .34, spread);
+
+  const x = Math.cos(angle) * radius;
+  const y = Math.sin(angle) * radius;
+  const dx = Math.cos(angle) * travel;
+  const dy = Math.sin(angle) * travel - random(30, 120);
+
+  p.style.setProperty("--x", `${x}px`);
+  p.style.setProperty("--y", `${y}px`);
+  p.style.setProperty("--dx", `${dx}px`);
+  p.style.setProperty("--dy", `${dy}px`);
+  p.style.setProperty("--size", `${random(front ? 4 : 3, front ? 11 : 9)}px`);
+  p.style.setProperty("--delay", `${random(.04, .70)}s`);
+  p.style.setProperty("--life", `${random(.75, 1.75)}s`);
+
+  layer.appendChild(p);
+}
+
+async function playPreview(key) {
+  clearTimeout(hideTimer);
+
+  const cfg = CONFIG[key];
+
+  root.className = `bb-alert bb-hidden ${cfg.css}`;
+  root.classList.remove("bb-active", "bb-exit");
+  clearParticles();
+
+  const preload = new Image();
+  preload.src = cfg.image;
+  await preload.decode();
+
+  card.src = cfg.image;
+  document.documentElement.style.setProperty("--bb-card-mask", cssUrl(cfg.image));
+
+  for (let i = 0; i < cfg.particles; i++) {
+    const front = i % 3 === 0;
+    createParticle(front ? frontParticles : particles, cfg.spread, front);
+  }
+
+  root.classList.remove("bb-hidden");
+  void root.offsetWidth;
+  root.classList.add("bb-active");
+
+  hideTimer = setTimeout(() => {
+    root.classList.remove("bb-active");
+    root.classList.add("bb-exit");
+  }, 6500);
+}
+
+document.querySelectorAll("[data-rarity]").forEach(btn => {
+  btn.addEventListener("click", () => playPreview(btn.dataset.rarity));
+});
+
+window.addEventListener("load", () => playPreview("golden"));
+</script>
+</body>
+</html>

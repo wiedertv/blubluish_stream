@@ -72,7 +72,7 @@ body {
 
 .bb-username {
   position: absolute;
-  z-index: 15;
+  z-index: 25;
   left: 50%;
   top: var(--bb-user-top);
   width: var(--bb-user-width);
@@ -344,57 +344,73 @@ body {
   animation: bbGoldenRing2 1.75s 0.22s ease-out both;
 }
 
-/* Foil/glint exists only on Golden */
+/* Foil/glint exists only on Golden.
+   IMPORTANT: the effect is alpha-masked using the actual card PNG,
+   so it can never render outside the visible card pixels. */
 .bb-foil,
 .bb-glint {
   position: absolute;
   inset: 0;
   z-index: 18;
   pointer-events: none;
-  border-radius: 8%;
-  overflow: hidden;
   opacity: 0;
   mix-blend-mode: screen;
+
+  -webkit-mask-image: var(--bb-card-mask);
+  mask-image: var(--bb-card-mask);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 .bb-foil {
-  background:
+  background-image:
     linear-gradient(
       112deg,
       transparent 0%,
-      rgba(100, 210, 255, .00) 24%,
-      rgba(117, 225, 255, .30) 31%,
-      rgba(238, 153, 255, .30) 36%,
-      rgba(255, 239, 126, .45) 42%,
-      rgba(136, 255, 205, .25) 49%,
-      transparent 57%
+      rgba(100, 210, 255, 0) 28%,
+      rgba(117, 225, 255, .22) 35%,
+      rgba(238, 153, 255, .26) 42%,
+      rgba(255, 239, 126, .40) 49%,
+      rgba(136, 255, 205, .20) 56%,
+      transparent 66%
     );
-  transform: translateX(-125%);
+
+  /* Move the GRADIENT, not the layer itself. */
+  background-size: 280% 100%;
+  background-position: 155% 50%;
 }
 
 .bb-glint {
-  background:
+  background-image:
     linear-gradient(
       104deg,
-      transparent 39%,
-      rgba(255,255,255,.0) 43%,
-      rgba(255,255,255,.86) 49%,
-      rgba(255,247,194,.35) 52%,
-      transparent 58%
+      transparent 0%,
+      transparent 43%,
+      rgba(255,255,255,.10) 46%,
+      rgba(255,255,255,.88) 49%,
+      rgba(255,247,194,.30) 52%,
+      transparent 58%,
+      transparent 100%
     );
-  transform: translateX(-135%);
+
+  background-size: 320% 100%;
+  background-position: 160% 50%;
 }
 
 .bb-alert.bb-golden.bb-active .bb-foil {
   opacity: 1;
-  animation: bbFoilSweep 1.45s .52s ease-in-out both;
+  animation: bbFoilSweep 1.45s .62s ease-in-out both;
 }
 
 .bb-alert.bb-golden.bb-active .bb-glint {
   opacity: 1;
   animation:
-    bbFoilSweep .82s .72s ease-out both,
-    bbFoilRepeat 1.65s 2.0s ease-in-out infinite;
+    bbGlintSweep .86s .78s ease-out both,
+    bbFoilRepeat 1.85s 2.05s ease-in-out infinite;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -579,15 +595,23 @@ body {
 }
 
 @keyframes bbFoilSweep {
-  0%   { transform: translateX(-135%) skewX(-9deg); }
-  100% { transform: translateX(135%) skewX(-9deg); }
+  0%   { background-position: 155% 50%; opacity: 0; }
+  15%  { opacity: .76; }
+  100% { background-position: -55% 50%; opacity: .72; }
+}
+
+@keyframes bbGlintSweep {
+  0%   { background-position: 160% 50%; opacity: 0; }
+  18%  { opacity: .92; }
+  100% { background-position: -60% 50%; opacity: 0; }
 }
 
 @keyframes bbFoilRepeat {
-  0%, 58% { transform: translateX(-145%) skewX(-9deg); opacity: 0; }
-  65%     { opacity: .72; }
-  82%     { opacity: .90; }
-  100%    { transform: translateX(145%) skewX(-9deg); opacity: 0; }
+  0%, 58% { background-position: 160% 50%; opacity: 0; }
+  64%     { opacity: .18; }
+  74%     { opacity: .62; }
+  86%     { opacity: .30; }
+  100%    { background-position: -60% 50%; opacity: 0; }
 }
 
 @keyframes bbCardOut {

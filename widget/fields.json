@@ -14,25 +14,25 @@
   "rareImageUrl": {
     "type": "text",
     "label": "RARE image URL",
-    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/assets/RARE.png",
+    "value": "https://wiedertv.github.io/blubluish_stream/assets/RARE.png",
     "group": "Assets"
   },
   "epicImageUrl": {
     "type": "text",
     "label": "EPIC image URL",
-    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/assets/EPIC.png",
+    "value": "https://wiedertv.github.io/blubluish_stream/assets/EPIC.png",
     "group": "Assets"
   },
   "legendaryImageUrl": {
     "type": "text",
     "label": "LEGENDARY image URL",
-    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/assets/LEGENDARY.png",
+    "value": "https://wiedertv.github.io/blubluish_stream/assets/LEGENDARY.png",
     "group": "Assets"
   },
   "goldenImageUrl": {
     "type": "text",
     "label": "GOLDEN LEGENDARY image URL",
-    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/assets/GOLDEN_LEGENDARY.png",
+    "value": "https://wiedertv.github.io/blubluish_stream/assets/GOLDEN_LEGENDARY.png",
     "group": "Assets"
   },
   "rareSoundUrl": {
@@ -56,7 +56,7 @@
   "goldenSoundUrl": {
     "type": "text",
     "label": "GOLDEN LEGENDARY sound URL",
-    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/audio/originals/golden_legendary.mp3",
+    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/audio/originals/golden-legendary.mp3",
     "group": "Audio"
   },
   "enableSound": {

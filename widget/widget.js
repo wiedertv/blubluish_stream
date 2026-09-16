@@ -136,6 +136,34 @@ function configureLayout() {
   );
 }
 
+function cssUrl(url) {
+  // Our asset URLs are trusted widget configuration values.
+  // Escape characters that could prematurely close CSS url("...").
+  return `url("${String(url).replace(/\\/g, "\\\\").replace(/"/g, '\\"')}")`;
+}
+
+function setCardMask(url) {
+  document.documentElement.style.setProperty("--bb-card-mask", cssUrl(url));
+}
+
+function loadCardImage(url) {
+  return new Promise((resolve, reject) => {
+    const preload = new Image();
+
+    preload.onload = () => {
+      cardImage.src = url;
+      setCardMask(url);
+      resolve();
+    };
+
+    preload.onerror = () => {
+      reject(new Error(`Could not load card image: ${url}`));
+    };
+
+    preload.src = url;
+  });
+}
+
 /* -------------------------------------------------------------------------- */
 /* Tier normalization                                                          */
 /* -------------------------------------------------------------------------- */
@@ -333,7 +361,7 @@ function finishAlert() {
   }, 520);
 }
 
-function showAlert(preset, name) {
+async function showAlert(preset, name) {
   if (!preset || !preset.image) {
     isPlaying = false;
     safeResumeQueue();
@@ -348,7 +376,19 @@ function showAlert(preset, name) {
 
   applyPresetClass(preset.css);
   username.textContent = sanitizeName(name);
-  cardImage.src = preset.image;
+
+  // Keep the widget hidden while the PNG is loading. This prevents the
+  // effects/audio from starting before the card is actually visible.
+  root.classList.add("bb-hidden");
+
+  try {
+    await loadCardImage(preset.image);
+  } catch (error) {
+    console.error("[Blubluish] Card image failed to load:", error);
+    isPlaying = false;
+    safeResumeQueue();
+    return;
+  }
 
   spawnParticles(preset.particleCount, preset.particleSpread);
 
