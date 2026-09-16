@@ -1,0 +1,611 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap");
+
+:root {
+  --bb-card-width: 560px;
+  --bb-user-top: 69%;
+  --bb-user-width: 72%;
+  --bb-user-font-size: 34px;
+  --bb-user-color: #f6fbff;
+
+  --bb-main: 90, 170, 255;
+  --bb-bright: 210, 240, 255;
+  --bb-deep: 28, 88, 220;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Base                                                                        */
+/* -------------------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.bb-alert {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  perspective: 1400px;
+}
+
+.bb-hidden {
+  visibility: hidden;
+}
+
+.bb-stage {
+  position: relative;
+  width: 980px;
+  height: 980px;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+}
+
+.bb-card-wrap {
+  position: relative;
+  width: var(--bb-card-width);
+  z-index: 10;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+}
+
+.bb-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter:
+    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.48))
+    drop-shadow(0 0 16px rgba(var(--bb-main), 0.18));
+}
+
+.bb-username {
+  position: absolute;
+  z-index: 15;
+  left: 50%;
+  top: var(--bb-user-top);
+  width: var(--bb-user-width);
+  transform: translate(-50%, -50%);
+
+  font-family: "Cinzel", Georgia, serif;
+  font-size: var(--bb-user-font-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-transform: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: var(--bb-user-color);
+  text-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.95),
+    0 0 6px rgba(var(--bb-main), 0.95),
+    0 0 16px rgba(var(--bb-main), 0.56);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Shared effects                                                              */
+/* -------------------------------------------------------------------------- */
+
+.bb-aura,
+.bb-burst,
+.bb-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.bb-aura {
+  width: 700px;
+  height: 700px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(var(--bb-bright), 0.48) 0%,
+      rgba(var(--bb-main), 0.28) 24%,
+      rgba(var(--bb-deep), 0.12) 48%,
+      transparent 72%
+    );
+  filter: blur(14px);
+}
+
+.bb-burst {
+  width: 760px;
+  height: 760px;
+  transform: translate(-50%, -50%) scale(0.15);
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(var(--bb-bright), 0.0) 0deg 5deg,
+      rgba(var(--bb-bright), 0.48) 5deg 7deg,
+      rgba(var(--bb-bright), 0.0) 7deg 18deg
+    );
+  -webkit-mask-image: radial-gradient(circle, #000 0 22%, transparent 68%);
+  mask-image: radial-gradient(circle, #000 0 22%, transparent 68%);
+  filter: blur(1px);
+}
+
+.bb-ring {
+  width: 440px;
+  height: 440px;
+  transform: translate(-50%, -50%) scale(0.3);
+  border-radius: 50%;
+  border: 3px solid rgba(var(--bb-main), 0.82);
+  box-shadow:
+    0 0 14px rgba(var(--bb-main), 0.75),
+    inset 0 0 14px rgba(var(--bb-main), 0.38);
+}
+
+.bb-ring-2 {
+  width: 510px;
+  height: 510px;
+  border-width: 1px;
+  border-style: dashed;
+  opacity: 0;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Particles                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.bb-particles,
+.bb-front-particles {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.bb-particles {
+  z-index: 3;
+}
+
+.bb-front-particles {
+  z-index: 30;
+}
+
+.bb-particle {
+  --x: 0px;
+  --y: 0px;
+  --dx: 0px;
+  --dy: -120px;
+  --size: 8px;
+  --delay: 0s;
+  --life: 1.4s;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--size);
+  height: var(--size);
+  margin-left: calc(var(--size) / -2);
+  margin-top: calc(var(--size) / -2);
+  transform: translate(var(--x), var(--y)) rotate(45deg);
+  border-radius: 2px;
+  opacity: 0;
+
+  background: rgba(var(--bb-bright), 0.98);
+  box-shadow:
+    0 0 6px rgba(var(--bb-bright), 0.98),
+    0 0 16px rgba(var(--bb-main), 0.76);
+
+  animation:
+    bbParticle var(--life) var(--delay) cubic-bezier(.15,.7,.25,1) forwards;
+}
+
+.bb-particle.bb-dot {
+  border-radius: 50%;
+  transform: translate(var(--x), var(--y));
+}
+
+/* -------------------------------------------------------------------------- */
+/* Rare                                                                        */
+/* -------------------------------------------------------------------------- */
+
+.bb-alert.bb-rare {
+  --bb-main: 72, 157, 255;
+  --bb-bright: 210, 241, 255;
+  --bb-deep: 25, 77, 211;
+}
+
+.bb-alert.bb-rare.bb-active .bb-card-wrap {
+  animation:
+    bbRareCardIn 0.72s cubic-bezier(.16,.84,.28,1.16) both,
+    bbRareIdle 2.4s 0.85s ease-in-out infinite;
+}
+
+.bb-alert.bb-rare.bb-active .bb-aura {
+  animation: bbAura 1.05s ease-out both;
+}
+
+.bb-alert.bb-rare.bb-active .bb-burst {
+  animation: bbBurst 0.72s 0.04s ease-out both;
+}
+
+.bb-alert.bb-rare.bb-active .bb-ring-1 {
+  animation: bbRing 0.92s 0.12s ease-out both;
+}
+
+.bb-alert.bb-rare.bb-active .bb-ring-2 {
+  animation: bbRingSoft 1.15s 0.20s ease-out both;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Epic                                                                        */
+/* -------------------------------------------------------------------------- */
+
+.bb-alert.bb-epic {
+  --bb-main: 171, 83, 255;
+  --bb-bright: 235, 211, 255;
+  --bb-deep: 91, 24, 180;
+}
+
+.bb-alert.bb-epic.bb-active .bb-card-wrap {
+  animation:
+    bbEpicCardIn 0.82s cubic-bezier(.14,.8,.22,1.12) both,
+    bbEpicIdle 2.2s 1s ease-in-out infinite;
+}
+
+.bb-alert.bb-epic.bb-active .bb-aura {
+  animation: bbEpicAura 1.25s ease-out both;
+}
+
+.bb-alert.bb-epic.bb-active .bb-burst {
+  animation: bbEpicBurst 1.05s ease-out both;
+}
+
+.bb-alert.bb-epic.bb-active .bb-ring-1 {
+  animation: bbEpicRing 1.20s 0.13s ease-out both;
+}
+
+.bb-alert.bb-epic.bb-active .bb-ring-2 {
+  animation: bbEpicRingReverse 1.35s 0.16s ease-out both;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Legendary                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.bb-alert.bb-legendary {
+  --bb-main: 255, 184, 61;
+  --bb-bright: 255, 242, 188;
+  --bb-deep: 199, 90, 13;
+}
+
+.bb-alert.bb-legendary.bb-active .bb-card-wrap {
+  animation:
+    bbLegendaryCardIn 0.95s cubic-bezier(.12,.82,.2,1.15) both,
+    bbLegendaryIdle 2.5s 1.15s ease-in-out infinite;
+}
+
+.bb-alert.bb-legendary.bb-active .bb-aura {
+  animation: bbLegendaryAura 1.5s ease-out both;
+}
+
+.bb-alert.bb-legendary.bb-active .bb-burst {
+  animation: bbLegendaryBurst 1.12s ease-out both;
+}
+
+.bb-alert.bb-legendary.bb-active .bb-ring-1 {
+  animation: bbLegendaryRing 1.35s 0.15s ease-out both;
+}
+
+.bb-alert.bb-legendary.bb-active .bb-ring-2 {
+  animation: bbLegendaryRing2 1.52s 0.20s ease-out both;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Golden Legendary                                                            */
+/* -------------------------------------------------------------------------- */
+
+.bb-alert.bb-golden {
+  --bb-main: 255, 202, 71;
+  --bb-bright: 255, 252, 225;
+  --bb-deep: 220, 112, 16;
+}
+
+.bb-alert.bb-golden.bb-active .bb-card-wrap {
+  animation:
+    bbGoldenCardIn 1.12s cubic-bezier(.1,.78,.16,1.17) both,
+    bbGoldenIdle 2.2s 1.35s ease-in-out infinite;
+}
+
+.bb-alert.bb-golden.bb-active .bb-aura {
+  animation: bbGoldenAura 1.85s ease-out both;
+}
+
+.bb-alert.bb-golden.bb-active .bb-burst {
+  animation: bbGoldenBurst 1.35s ease-out both;
+}
+
+.bb-alert.bb-golden.bb-active .bb-ring-1 {
+  animation: bbGoldenRing 1.55s 0.15s ease-out both;
+}
+
+.bb-alert.bb-golden.bb-active .bb-ring-2 {
+  animation: bbGoldenRing2 1.75s 0.22s ease-out both;
+}
+
+/* Foil/glint exists only on Golden */
+.bb-foil,
+.bb-glint {
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+  border-radius: 8%;
+  overflow: hidden;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.bb-foil {
+  background:
+    linear-gradient(
+      112deg,
+      transparent 0%,
+      rgba(100, 210, 255, .00) 24%,
+      rgba(117, 225, 255, .30) 31%,
+      rgba(238, 153, 255, .30) 36%,
+      rgba(255, 239, 126, .45) 42%,
+      rgba(136, 255, 205, .25) 49%,
+      transparent 57%
+    );
+  transform: translateX(-125%);
+}
+
+.bb-glint {
+  background:
+    linear-gradient(
+      104deg,
+      transparent 39%,
+      rgba(255,255,255,.0) 43%,
+      rgba(255,255,255,.86) 49%,
+      rgba(255,247,194,.35) 52%,
+      transparent 58%
+    );
+  transform: translateX(-135%);
+}
+
+.bb-alert.bb-golden.bb-active .bb-foil {
+  opacity: 1;
+  animation: bbFoilSweep 1.45s .52s ease-in-out both;
+}
+
+.bb-alert.bb-golden.bb-active .bb-glint {
+  opacity: 1;
+  animation:
+    bbFoilSweep .82s .72s ease-out both,
+    bbFoilRepeat 1.65s 2.0s ease-in-out infinite;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Exit                                                                        */
+/* -------------------------------------------------------------------------- */
+
+.bb-alert.bb-exit .bb-card-wrap {
+  animation: bbCardOut .46s ease-in both !important;
+}
+
+.bb-alert.bb-exit .bb-aura,
+.bb-alert.bb-exit .bb-burst,
+.bb-alert.bb-exit .bb-ring {
+  animation: bbEffectsOut .40s ease-in both !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Keyframes                                                                   */
+/* -------------------------------------------------------------------------- */
+
+@keyframes bbRareCardIn {
+  0%   { opacity: 0; transform: scale(.64) translateY(18px) rotateZ(-1deg); filter: blur(7px) brightness(1.8); }
+  62%  { opacity: 1; transform: scale(1.055) translateY(-3px) rotateZ(.3deg); filter: blur(0) brightness(1.22); }
+  100% { opacity: 1; transform: scale(1) translateY(0) rotateZ(0); filter: brightness(1); }
+}
+
+@keyframes bbEpicCardIn {
+  0%   { opacity: 0; transform: scale(.58) rotateY(-24deg) rotateZ(-2deg); filter: blur(8px) brightness(1.9); }
+  58%  { opacity: 1; transform: scale(1.07) rotateY(5deg) rotateZ(.6deg); filter: blur(0) brightness(1.25); }
+  100% { opacity: 1; transform: scale(1) rotateY(0) rotateZ(0); filter: brightness(1); }
+}
+
+@keyframes bbLegendaryCardIn {
+  0%   { opacity: 0; transform: scale(.50) translateY(28px); filter: blur(9px) brightness(2); }
+  48%  { opacity: 1; transform: scale(1.11) translateY(-5px); filter: blur(0) brightness(1.38); }
+  72%  { transform: scale(.975) translateY(1px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); }
+}
+
+@keyframes bbGoldenCardIn {
+  0%   { opacity: 0; transform: scale(.42) rotateY(-18deg) translateY(34px); filter: blur(12px) brightness(2.6); }
+  42%  { opacity: 1; transform: scale(1.13) rotateY(4deg) translateY(-7px); filter: blur(0) brightness(1.55); }
+  68%  { transform: scale(.97) rotateY(-1deg); filter: brightness(1.14); }
+  100% { opacity: 1; transform: scale(1) rotateY(0); filter: brightness(1); }
+}
+
+@keyframes bbRareIdle {
+  0%,100% { transform: translateY(0) scale(1); }
+  50%     { transform: translateY(-3px) scale(1.003); }
+}
+
+@keyframes bbEpicIdle {
+  0%,100% { transform: translateY(0) rotateZ(0); }
+  50%     { transform: translateY(-4px) rotateZ(.25deg); }
+}
+
+@keyframes bbLegendaryIdle {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-3px); }
+}
+
+@keyframes bbGoldenIdle {
+  0%,100% { transform: translateY(0) scale(1); }
+  50%     { transform: translateY(-4px) scale(1.004); }
+}
+
+@keyframes bbAura {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.22); }
+  25%  { opacity: .95; }
+  100% { opacity: .26; transform: translate(-50%,-50%) scale(1.16); }
+}
+
+@keyframes bbEpicAura {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.18) rotate(0); }
+  32%  { opacity: 1; }
+  100% { opacity: .30; transform: translate(-50%,-50%) scale(1.22) rotate(24deg); }
+}
+
+@keyframes bbLegendaryAura {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.12); }
+  30%  { opacity: 1; }
+  100% { opacity: .34; transform: translate(-50%,-50%) scale(1.32); }
+}
+
+@keyframes bbGoldenAura {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.08); filter: blur(22px) hue-rotate(0deg); }
+  28%  { opacity: 1; }
+  100% { opacity: .42; transform: translate(-50%,-50%) scale(1.42); filter: blur(15px) hue-rotate(28deg); }
+}
+
+@keyframes bbBurst {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.12) rotate(-8deg); }
+  18%  { opacity: .95; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.42) rotate(10deg); }
+}
+
+@keyframes bbEpicBurst {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.10) rotate(-28deg); }
+  23%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.55) rotate(38deg); }
+}
+
+@keyframes bbLegendaryBurst {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.08) rotate(-6deg); }
+  20%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.78) rotate(12deg); }
+}
+
+@keyframes bbGoldenBurst {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.05) rotate(-18deg); filter: hue-rotate(0deg); }
+  18%  { opacity: 1; }
+  60%  { opacity: .58; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(2.0) rotate(26deg); filter: hue-rotate(42deg); }
+}
+
+@keyframes bbRing {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.28); }
+  25%  { opacity: .9; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.55); }
+}
+
+@keyframes bbRingSoft {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.22) rotate(0); }
+  28%  { opacity: .65; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.7) rotate(60deg); }
+}
+
+@keyframes bbEpicRing {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.22) rotate(-35deg); }
+  30%  { opacity: .95; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.65) rotate(48deg); }
+}
+
+@keyframes bbEpicRingReverse {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.18) rotate(45deg); }
+  30%  { opacity: .55; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.78) rotate(-68deg); }
+}
+
+@keyframes bbLegendaryRing {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.18); border-width: 5px; }
+  24%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.88); border-width: 1px; }
+}
+
+@keyframes bbLegendaryRing2 {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.16) rotate(-16deg); }
+  32%  { opacity: .7; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(2.02) rotate(72deg); }
+}
+
+@keyframes bbGoldenRing {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.12); border-width: 7px; }
+  22%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(2.08); border-width: 1px; }
+}
+
+@keyframes bbGoldenRing2 {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.10) rotate(0deg); }
+  30%  { opacity: .82; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(2.22) rotate(110deg); }
+}
+
+@keyframes bbParticle {
+  0% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) rotate(45deg) scale(.2);
+  }
+  16% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform:
+      translate(
+        calc(var(--x) + var(--dx)),
+        calc(var(--y) + var(--dy))
+      )
+      rotate(225deg)
+      scale(.05);
+  }
+}
+
+@keyframes bbFoilSweep {
+  0%   { transform: translateX(-135%) skewX(-9deg); }
+  100% { transform: translateX(135%) skewX(-9deg); }
+}
+
+@keyframes bbFoilRepeat {
+  0%, 58% { transform: translateX(-145%) skewX(-9deg); opacity: 0; }
+  65%     { opacity: .72; }
+  82%     { opacity: .90; }
+  100%    { transform: translateX(145%) skewX(-9deg); opacity: 0; }
+}
+
+@keyframes bbCardOut {
+  0%   { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+  100% { opacity: 0; transform: scale(.91) translateY(-14px); filter: blur(5px); }
+}
+
+@keyframes bbEffectsOut {
+  to { opacity: 0; }
+}
+
+/* Small browser source safeguard */
+@media (max-height: 760px) {
+  :root {
+    --bb-card-width: 470px;
+  }
+
+  .bb-stage {
+    transform: scale(.86);
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "widgetName": {
+    "type": "hidden",
+    "value": "Blubluish Card Alerts"
+  },
+  "widgetAuthor": {
+    "type": "hidden",
+    "value": "Blubluish"
+  },
+  "widgetDuration": {
+    "type": "hidden",
+    "value": 9
+  },
+  "rareImageUrl": {
+    "type": "text",
+    "label": "RARE image URL",
+    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/assets/RARE.png",
+    "group": "Assets"
+  },
+  "epicImageUrl": {
+    "type": "text",
+    "label": "EPIC image URL",
+    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/assets/EPIC.png",
+    "group": "Assets"
+  },
+  "legendaryImageUrl": {
+    "type": "text",
+    "label": "LEGENDARY image URL",
+    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/assets/LEGENDARY.png",
+    "group": "Assets"
+  },
+  "goldenImageUrl": {
+    "type": "text",
+    "label": "GOLDEN LEGENDARY image URL",
+    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/assets/GOLDEN_LEGENDARY.png",
+    "group": "Assets"
+  },
+  "rareSoundUrl": {
+    "type": "text",
+    "label": "RARE sound URL",
+    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/audio/originals/rare.mp3",
+    "group": "Audio"
+  },
+  "epicSoundUrl": {
+    "type": "text",
+    "label": "EPIC sound URL",
+    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/audio/originals/epic.mp3",
+    "group": "Audio"
+  },
+  "legendarySoundUrl": {
+    "type": "text",
+    "label": "LEGENDARY sound URL",
+    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/audio/originals/legendary.mp3",
+    "group": "Audio"
+  },
+  "goldenSoundUrl": {
+    "type": "text",
+    "label": "GOLDEN LEGENDARY sound URL",
+    "value": "https://raw.githubusercontent.com/wiedertv/blubluish_stream/refs/heads/main/audio/originals/golden_legendary.mp3",
+    "group": "Audio"
+  },
+  "enableSound": {
+    "type": "checkbox",
+    "label": "Enable sound",
+    "value": true,
+    "group": "Audio"
+  },
+  "soundVolume": {
+    "type": "slider",
+    "label": "Sound volume %",
+    "value": 85,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Audio"
+  },
+  "cardWidth": {
+    "type": "slider",
+    "label": "Card width (px)",
+    "value": 560,
+    "min": 300,
+    "max": 850,
+    "step": 5,
+    "group": "Layout"
+  },
+  "usernameTop": {
+    "type": "slider",
+    "label": "Username vertical position (%)",
+    "value": 69,
+    "min": 45,
+    "max": 88,
+    "step": 0.5,
+    "group": "Layout"
+  },
+  "usernameWidth": {
+    "type": "slider",
+    "label": "Username width (%)",
+    "value": 72,
+    "min": 30,
+    "max": 95,
+    "step": 1,
+    "group": "Layout"
+  },
+  "usernameFontSize": {
+    "type": "slider",
+    "label": "Username font size (px)",
+    "value": 34,
+    "min": 18,
+    "max": 64,
+    "step": 1,
+    "group": "Layout"
+  },
+  "usernameColor": {
+    "type": "colorpicker",
+    "label": "Username color",
+    "value": "#F6FBFF",
+    "group": "Layout"
+  },
+  "maxUsernameLength": {
+    "type": "number",
+    "label": "Max username characters",
+    "value": 24,
+    "min": 8,
+    "max": 40,
+    "step": 1,
+    "group": "Layout"
+  },
+  "rareDuration": {
+    "type": "slider",
+    "label": "RARE duration (seconds)",
+    "value": 5.2,
+    "min": 2,
+    "max": 8,
+    "step": 0.1,
+    "group": "Timing"
+  },
+  "epicDuration": {
+    "type": "slider",
+    "label": "EPIC duration (seconds)",
+    "value": 5.7,
+    "min": 2,
+    "max": 8,
+    "step": 0.1,
+    "group": "Timing"
+  },
+  "legendaryDuration": {
+    "type": "slider",
+    "label": "LEGENDARY duration (seconds)",
+    "value": 6.2,
+    "min": 2,
+    "max": 8,
+    "step": 0.1,
+    "group": "Timing"
+  },
+  "goldenDuration": {
+    "type": "slider",
+    "label": "GOLDEN LEGENDARY duration (seconds)",
+    "value": 7,
+    "min": 2,
+    "max": 8,
+    "step": 0.1,
+    "group": "Timing"
+  },
+  "rareParticles": {
+    "type": "slider",
+    "label": "RARE particles",
+    "value": 20,
+    "min": 0,
+    "max": 70,
+    "step": 1,
+    "group": "Effects"
+  },
+  "epicParticles": {
+    "type": "slider",
+    "label": "EPIC particles",
+    "value": 27,
+    "min": 0,
+    "max": 70,
+    "step": 1,
+    "group": "Effects"
+  },
+  "legendaryParticles": {
+    "type": "slider",
+    "label": "LEGENDARY particles",
+    "value": 34,
+    "min": 0,
+    "max": 80,
+    "step": 1,
+    "group": "Effects"
+  },
+  "goldenParticles": {
+    "type": "slider",
+    "label": "GOLDEN LEGENDARY particles",
+    "value": 46,
+    "min": 0,
+    "max": 100,
+    "step": 1,
+    "group": "Effects"
+  },
+  "testUsername": {
+    "type": "text",
+    "label": "Test username",
+    "value": "ArthasMain",
+    "group": "Testing"
+  },
+  "testRare": {
+    "type": "button",
+    "label": "Test RARE",
+    "value": "Play",
+    "group": "Testing"
+  },
+  "testEpic": {
+    "type": "button",
+    "label": "Test EPIC",
+    "value": "Play",
+    "group": "Testing"
+  },
+  "testLegendary": {
+    "type": "button",
+    "label": "Test LEGENDARY",
+    "value": "Play",
+    "group": "Testing"
+  },
+  "testGolden": {
+    "type": "button",
+    "label": "Test GOLDEN LEGENDARY",
+    "value": "Play",
+    "group": "Testing"
+  }
+}
